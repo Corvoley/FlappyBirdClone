@@ -17,7 +17,11 @@ public class AnimationController : MonoBehaviour
         animator.SetFloat("VelocityY", playerController.Velocity.y);
     }
 
-
+    public void Die()
+    {
+        animator.enabled = false;
+        enabled = false;
+    }
 
 
 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
@@ -10,6 +11,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float flapForce = 10;
     [SerializeField] private float flapAngleDegress = 20;
     [SerializeField] private float rotateDownSpeed = 5;
+
+    private bool isDead;
     private Vector3 velocity;
     public Vector3 Velocity => velocity;
 
@@ -21,6 +24,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        isDead = false;
         input = GetComponent<PlayerInputs>();
     }
     private void Update()
@@ -37,7 +41,7 @@ public class PlayerController : MonoBehaviour
 
     private float ProcessInputs()
     {
-        if (input.ScreenTap())
+        if (input.ScreenTap() && !isDead)
         {
             velocity.y = flapForce;
             zRot = flapAngleDegress;
@@ -59,7 +63,29 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
+    public void Die()
+    {
+        if (!isDead)
+        {
+            isDead = true;
+            playerSpeed = 0;
+            flapForce = 0;
+            input.enabled = false;
+            velocity = Vector3.zero;
+            AnimationController animation = GetComponent<AnimationController>();
+            if (animation != null)
+            {
+                animation.Die();
+            }
+            StartCoroutine(Temp_ReloadGame());
+        }
+    }
+    //TODO: Mover para o gamemode
+    private IEnumerator Temp_ReloadGame()
+    {
+        yield return new WaitForSeconds(3);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 
 
 }

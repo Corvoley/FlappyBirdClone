@@ -7,6 +7,10 @@ public class PlayerInputs : MonoBehaviour
     
     public bool ScreenTap()
     {
+        if (!enabled)
+        {
+            return false;
+        }
         if (Input.GetMouseButtonDown(0))
         {
             return true;
