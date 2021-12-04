@@ -17,14 +17,6 @@ public class Pipe : MonoBehaviour
 
         Gizmos.color = Color.blue;
         Gizmos.DrawCube(Tail, Vector3.one * 0.25f);
-    }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        PlayerController player = collision.GetComponent<PlayerController>();
-        if (player != null)
-        {
-            player.Die();
-        }
-    }
+    }  
 
 }
