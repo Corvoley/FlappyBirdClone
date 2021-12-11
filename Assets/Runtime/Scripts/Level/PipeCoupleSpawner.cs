@@ -12,6 +12,7 @@ public class PipeCoupleSpawner : MonoBehaviour
     [SerializeField] private float maxGapCenter = 2;
     [SerializeField] private float minGapCenter = 1;
 
+
     private Pipe bottomPipe;
     private Pipe topPipe;
 
@@ -20,6 +21,7 @@ public class PipeCoupleSpawner : MonoBehaviour
     {
         SpawnPipes();
     }
+  
 
     public void SpawnPipes()
     {
@@ -46,7 +48,7 @@ public class PipeCoupleSpawner : MonoBehaviour
         Gizmos.color = Color.yellow;
         DrawGap(transform.position + Vector3.up * maxGapCenter);
         DrawGap(transform.position - Vector3.up * minGapCenter);
-        
+
     }
     private void DrawGap(Vector3 position)
     {

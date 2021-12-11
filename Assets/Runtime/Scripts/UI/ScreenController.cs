@@ -1,18 +1,65 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ScreenController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private GameObject[] screens;
+    private GameObject currentScreen;
+
+    private void Awake()
     {
-        
+        foreach(GameObject screen in screens)
+        {
+            screen.gameObject.SetActive(false);
+        }
+    }
+    
+    public void ShowPauseScreen()
+    {        
+        ShowScreen(FindScreenWithComponent(typeof(PauseScreen)));
+    }    
+    public void ShowInGameHud()
+    {        
+        ShowScreen(FindScreenWithComponent(typeof(InGameHudScreen)));
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void ShowWaitToStartGameScreen()
+    {        
+        ShowScreen(FindScreenWithComponent(typeof(WaitGameStartScreen)));
     }
+
+    public void ShowGameOverScreen()
+    {
+        ShowScreen(FindScreenWithComponent(typeof(GameOverScreen)));
+    }
+
+
+    private void ShowScreen(GameObject screen)
+    {
+        CloseCurrent();
+        screen.SetActive(true);
+        currentScreen = screen;
+    }
+
+    private void CloseCurrent()
+    {
+        if (currentScreen != null)
+        {
+            currentScreen.gameObject.SetActive(false);
+        }
+    }
+    private GameObject FindScreenWithComponent(Type type)
+    {
+        foreach (GameObject screen in screens)
+        {
+            if (screen.GetComponent(type) != null)
+            {
+                return screen;
+            }
+        }
+        return null;
+    }
+
 }

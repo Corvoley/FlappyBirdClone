@@ -11,33 +11,41 @@ public class EndlessPipeGenerator : MonoBehaviour
     private SpriteRenderer groundLeftSprite;
     private SpriteRenderer groundRightSprite;
 
+    public Vector3 GroundLeftPos => groundLeftPos;
+    public Vector3 GroundRightPos => groundRightPos;
+
     private Vector3 groundRightPos;
     private Vector3 groundLeftPos;
 
 
     [SerializeField] private int numberOfPipesSpawn = 2;
     [SerializeField] private float distBetweenPipes = 5;
-    [SerializeField] private float initialSpawnPosX = 10;
+    [SerializeField] private float initialDistanceToStartSpawn = 10;
     [SerializeField] private float minPlayerDistFromLastSpawn = 20;
     [SerializeField] private float minDistFromPlayerToDestroyPipe = 10;
     
     private Vector3 currentSpawnPos;
 
-    private List<PipeCoupleSpawner> pipeSpawnersList = new List<PipeCoupleSpawner>();
+    [SerializeField]private List<PipeCoupleSpawner> pipeSpawnersList = new List<PipeCoupleSpawner>();
     private void Awake()
     {
         groundLeftSprite = groundLeft.gameObject.GetComponent<SpriteRenderer>();
         groundRightSprite = groundRight.gameObject.GetComponent<SpriteRenderer>();
         groundRightPos = groundRight.transform.position;
-        groundLeftPos = groundLeft.transform.position;
-        currentSpawnPos = new Vector3(initialSpawnPosX, 0, 0);
-        PipeSpawn(numberOfPipesSpawn);
+        groundLeftPos = groundLeft.transform.position;     
+        
     }
     private void Update()
     {
         PipeSpawnController();
         GroundController();
 
+    }
+
+    public void StartPipeSpawn()
+    {
+        currentSpawnPos = new Vector3(player.transform.position.x + initialDistanceToStartSpawn, 0, 0);
+        PipeSpawn(numberOfPipesSpawn);
     }
 
     private void GroundController()
@@ -51,20 +59,25 @@ public class EndlessPipeGenerator : MonoBehaviour
         {
             groundRightPos.x = groundLeftPos.x + groundLeftSprite.bounds.size.x;
             groundRight.transform.position = groundRightPos;
+            
         }
     }
 
     private void PipeSpawnController()
     {
-        if (player.transform.position.x + minPlayerDistFromLastSpawn >= pipeSpawnersList[pipeSpawnersList.Count - 1].transform.position.x)
+        if (pipeSpawnersList.Count > 0)
         {
-            PipeSpawn(numberOfPipesSpawn);
+            if (player.transform.position.x + minPlayerDistFromLastSpawn >= pipeSpawnersList[pipeSpawnersList.Count - 1].transform.position.x)
+            {
+                PipeSpawn(numberOfPipesSpawn);
+            }
+            if (player.transform.position.x - minDistFromPlayerToDestroyPipe >= pipeSpawnersList[0].transform.position.x)
+            {
+                Destroy(pipeSpawnersList[0].gameObject);
+                pipeSpawnersList.RemoveRange(0, 1);
+            }
         }
-        if (player.transform.position.x - minDistFromPlayerToDestroyPipe >= pipeSpawnersList[0].transform.position.x)
-        {
-            Destroy(pipeSpawnersList[0].gameObject);
-            pipeSpawnersList.RemoveRange(0, 1);
-        }        
+              
     }
     private void PipeSpawn(int numberOfPipes)
     {       

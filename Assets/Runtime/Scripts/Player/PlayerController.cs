@@ -6,11 +6,11 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float playerSpeed = 10;
-    [SerializeField] private float gravity = 1.8f * 9.8f;
-    [SerializeField] private float flapForce = 10;
-    [SerializeField] private float flapAngleDegress = 20;
-    [SerializeField] private float rotateDownSpeed = 5;
+    [SerializeField] private GameMode gameMode;
+
+    [field: SerializeField]
+    public PlayerMovementParameters MovementParameters { get; set; }
+
 
     private bool isDead;
     private Vector3 velocity;
@@ -35,41 +35,41 @@ public class PlayerController : MonoBehaviour
 
         transform.rotation = Quaternion.Euler(0, 0, zRot);
         transform.position += velocity * Time.deltaTime;
-
-
     }
 
     private float ProcessInputs()
     {
         if (input.ScreenTap() && !isDead)
         {
-            velocity.y = flapForce;
-            zRot = flapAngleDegress;
+            Flap();
+            zRot = MovementParameters.FlapAngleDegress;
         }
         return zRot;
     }
     private void ProcessMovement()
     {
-        velocity.x = playerSpeed;
-        velocity.y -= gravity * Time.deltaTime;
+        velocity.x = MovementParameters.PlayerSpeed;
+        velocity.y -= MovementParameters.Gravity * Time.deltaTime;
     }
 
     private void ProcessRotation()
     {
         if (velocity.y < 0)
         {
-            zRot -= rotateDownSpeed * Time.deltaTime;
+            zRot -= MovementParameters.RotateDownSpeed * Time.deltaTime;
             zRot = Mathf.Max(-90, zRot);
         }
+    }
+    public void Flap()
+    {
+        velocity.y = MovementParameters.FlapForce;
     }
 
     public void Die()
     {
         if (!isDead)
         {
-            isDead = true;
-            playerSpeed = 0;
-            flapForce = 0;
+            isDead = true;            
             input.enabled = false;
             velocity = Vector3.zero;
             AnimationController animation = GetComponent<AnimationController>();
@@ -77,15 +77,16 @@ public class PlayerController : MonoBehaviour
             {
                 animation.Die();
             }
-            StartCoroutine(Temp_ReloadGame());
+            gameMode.GameOver();
         }
     }
-    //TODO: Mover para o gamemode
-    private IEnumerator Temp_ReloadGame()
+    public void IncrementScore()
     {
-        yield return new WaitForSeconds(3);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        gameMode.IncrementScore();
     }
-
-
+    public void StopAllMoviment()
+    {
+        gameMode.StopAllMoviment();
+    }
+ 
 }
