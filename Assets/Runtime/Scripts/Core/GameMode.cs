@@ -12,6 +12,12 @@ public class GameMode : MonoBehaviour
     [SerializeField] private EndlessPipeGenerator pipeGenerator;
     [SerializeField] private ScreenController screenController;
     [SerializeField] private GameSaver gameSaver;
+    
+    [Header("Audio")]    
+    [SerializeField] private AudioService audioService;
+    [SerializeField] private AudioClip fallAudio;
+    [SerializeField] private float fallAudioDelay = 0.3f;
+
 
     [Header("Data")]
     [SerializeField] private PlayerMovementParameters gameRunningParameters;
@@ -27,6 +33,7 @@ public class GameMode : MonoBehaviour
     {
         gameSaver.LoadGame();
         WaitGameStart();
+        AudioUtility.AudioService = audioService;
     }
 
     public void WaitGameStart()
@@ -57,7 +64,17 @@ public class GameMode : MonoBehaviour
     {
         playerController.MovementParameters = gameOverParameters;
         gameSaver.SaveGame(new SaveGameData { HighestScore = HighScore });
+        StartCoroutine(GameOverCor());
+
+    }
+    private IEnumerator GameOverCor()
+    {
         screenController.ShowGameOverScreen();
+        yield return new WaitForSeconds(fallAudioDelay);
+        if (!playerController.IsOnGround)
+        {
+            AudioUtility.PlayAudioCue(fallAudio);
+        }
     }
     public void ReloadGame()
     {                    

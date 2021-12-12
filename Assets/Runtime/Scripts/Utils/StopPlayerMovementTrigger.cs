@@ -13,7 +13,8 @@ public class StopPlayerMovementTrigger : MonoBehaviour
         PlayerController player = collision.GetComponent<PlayerController>();
         if (player != null)
         {
-            player.StopAllMoviment();
+            player.OnHitGround();
+            
         }
     }
 }

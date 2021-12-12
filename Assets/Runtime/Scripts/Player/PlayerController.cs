@@ -11,12 +11,15 @@ public class PlayerController : MonoBehaviour
     [field: SerializeField]
     public PlayerMovementParameters MovementParameters { get; set; }
 
+    [SerializeField] private AudioClip flapClip;
+
 
     private bool isDead;
     private Vector3 velocity;
     public Vector3 Velocity => velocity;
 
     private float zRot;
+    public bool IsOnGround { get; private set; }
 
 
     private PlayerInputs input;
@@ -42,7 +45,7 @@ public class PlayerController : MonoBehaviour
         if (input.ScreenTap() && !isDead)
         {
             Flap();
-            zRot = MovementParameters.FlapAngleDegress;
+            AudioUtility.PlayAudioCue(flapClip);
         }
         return zRot;
     }
@@ -63,6 +66,8 @@ public class PlayerController : MonoBehaviour
     public void Flap()
     {
         velocity.y = MovementParameters.FlapForce;
+        zRot = MovementParameters.FlapAngleDegress;
+        
     }
 
     public void Die()
@@ -84,8 +89,10 @@ public class PlayerController : MonoBehaviour
     {
         gameMode.IncrementScore();
     }
-    public void StopAllMoviment()
+    public void OnHitGround()
     {
+        IsOnGround = true;
+        enabled = false;
         gameMode.StopAllMoviment();
     }
  
