@@ -12,6 +12,7 @@ public class GameMode : MonoBehaviour
     [SerializeField] private EndlessPipeGenerator pipeGenerator;
     [SerializeField] private ScreenController screenController;
     [SerializeField] private GameSaver gameSaver;
+    [SerializeField] private FadeScreen fadeScreen;
     
     [Header("Audio")]    
     [SerializeField] private AudioService audioService;
@@ -25,6 +26,9 @@ public class GameMode : MonoBehaviour
     [SerializeField] private PlayerMovementParameters waitGameStartParameters;
     [SerializeField] private PlayerMovementParameters stopAllMovimentParameters;
 
+    [Header("UI")]
+    [SerializeField] private float fadeTime = 0.5f;
+
     public int Score { get; private set; }
     public int HighScore => gameSaver.CurrentSave.HighestScore < Score ? Score : gameSaver.CurrentSave.HighestScore;
 
@@ -32,8 +36,11 @@ public class GameMode : MonoBehaviour
     private void Awake()
     {
         gameSaver.LoadGame();
+        StartCoroutine(fadeScreen.FadeOut(fadeTime, Color.black));
         WaitGameStart();
         AudioUtility.AudioService = audioService;
+
+        
     }
 
     public void WaitGameStart()
@@ -64,6 +71,7 @@ public class GameMode : MonoBehaviour
     {
         playerController.MovementParameters = gameOverParameters;
         gameSaver.SaveGame(new SaveGameData { HighestScore = HighScore });
+        StartCoroutine(fadeScreen.Flash());
         StartCoroutine(GameOverCor());
 
     }
@@ -77,8 +85,13 @@ public class GameMode : MonoBehaviour
         }
     }
     public void ReloadGame()
-    {                    
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);        
+    {
+        StartCoroutine(ReloadGameCor());
+    }
+    private IEnumerator ReloadGameCor()
+    {
+        yield return fadeScreen.FadeIn(fadeTime, Color.black);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void QuitGame()
