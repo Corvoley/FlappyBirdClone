@@ -10,6 +10,8 @@ public class EndlessPipeGenerator : MonoBehaviour
     [SerializeField] private GameObject groundLeft;
     private SpriteRenderer groundLeftSprite;
     private SpriteRenderer groundRightSprite;
+    private ObjPool<PipeCoupleSpawner> pipePool;
+    PipeCoupleSpawner pipeSpawner;
 
     public Vector3 GroundLeftPos => groundLeftPos;
     public Vector3 GroundRightPos => groundRightPos;
@@ -29,6 +31,7 @@ public class EndlessPipeGenerator : MonoBehaviour
     [SerializeField]private List<PipeCoupleSpawner> pipeSpawnersList = new List<PipeCoupleSpawner>();
     private void Awake()
     {
+        pipePool = GetComponent<PipePool>();
         groundLeftSprite = groundLeft.gameObject.GetComponent<SpriteRenderer>();
         groundRightSprite = groundRight.gameObject.GetComponent<SpriteRenderer>();
         groundRightPos = groundRight.transform.position;
@@ -73,7 +76,7 @@ public class EndlessPipeGenerator : MonoBehaviour
             }
             if (player.transform.position.x - minDistFromPlayerToDestroyPipe >= pipeSpawnersList[0].transform.position.x)
             {
-                Destroy(pipeSpawnersList[0].gameObject);
+                pipePool.ReturnToPool(pipeSpawnersList[0]);
                 pipeSpawnersList.RemoveRange(0, 1);
             }
         }
@@ -83,7 +86,9 @@ public class EndlessPipeGenerator : MonoBehaviour
     {       
         for (int i = 0; i < numberOfPipes; i++)
         {
-            PipeCoupleSpawner pipeSpawner = Instantiate(pipeSpawnerPrefab, currentSpawnPos, Quaternion.identity, transform);
+            pipeSpawner = pipePool.GetOrCreateFromPool(pipeSpawnerPrefab, currentSpawnPos, transform);
+            pipeSpawner.transform.position = currentSpawnPos;
+            pipeSpawner.SetPipePosition();
             currentSpawnPos.x += distBetweenPipes;
             pipeSpawnersList.Add(pipeSpawner);
         }        

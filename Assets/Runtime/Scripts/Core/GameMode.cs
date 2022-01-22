@@ -25,6 +25,7 @@ public class GameMode : MonoBehaviour
     [SerializeField] private PlayerMovementParameters gameOverParameters;
     [SerializeField] private PlayerMovementParameters waitGameStartParameters;
     [SerializeField] private PlayerMovementParameters stopAllMovimentParameters;
+    [SerializeField] private PlayerMovementParameters noGravityMovimentParameters;
 
     [Header("UI")]
     [SerializeField] private float fadeTime = 0.5f;
@@ -50,7 +51,7 @@ public class GameMode : MonoBehaviour
     }
     public void StartGame()
     {
-        playerController.MovementParameters = gameRunningParameters;
+        playerController.MovementParameters = noGravityMovimentParameters;
         playerController.Flap();        
         pipeGenerator.StartPipeSpawn();
         screenController.ShowInGameHud();

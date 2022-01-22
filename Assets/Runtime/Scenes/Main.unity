@@ -123,6 +123,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &19928950 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1308468039543344190, guid: 228738ebb3057764aa194b053a021f1b, type: 3}
+  m_PrefabInstance: {fileID: 1308468039146866250}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &63465617
 GameObject:
   m_ObjectHideFlags: 0
@@ -1014,12 +1019,25 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1308468039543344191, guid: 228738ebb3057764aa194b053a021f1b, type: 3}
   m_PrefabInstance: {fileID: 1308468039146866250}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 19928950}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b9498e178a594994c8b546ca2f6ca116, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1861729555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 19928950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eeb52d826cee06841887ff58a1248dff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objPool: []
 --- !u!1 &1878915229
 GameObject:
   m_ObjectHideFlags: 0
@@ -1364,6 +1382,18 @@ PrefabInstance:
       propertyPath: gameMode
       value: 
       objectReference: {fileID: 961980806}
+    - target: {fileID: 4066270166753737822, guid: e582995dde7490f4eb59b600edc45af3, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4066270166753737823, guid: e582995dde7490f4eb59b600edc45af3, type: 3}
+      propertyPath: m_BodyType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4066270166753737823, guid: e582995dde7490f4eb59b600edc45af3, type: 3}
+      propertyPath: m_Simulated
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4066270166753738144, guid: e582995dde7490f4eb59b600edc45af3, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -1687,6 +1717,10 @@ PrefabInstance:
       propertyPath: stopAllMovimentParameters
       value: 
       objectReference: {fileID: 11400000, guid: 5c520b833ff30b841ae254769e8ed4bc, type: 2}
+    - target: {fileID: 5776813030918516747, guid: e2b4db3dbe7f4b34d8df2263db8a47a6, type: 3}
+      propertyPath: noGravityMovimentParameters
+      value: 
+      objectReference: {fileID: 11400000, guid: f7fed4e1c3c89dd4493bdd9c37c83195, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e2b4db3dbe7f4b34d8df2263db8a47a6, type: 3}
 --- !u!1001 &6244535903515088963
