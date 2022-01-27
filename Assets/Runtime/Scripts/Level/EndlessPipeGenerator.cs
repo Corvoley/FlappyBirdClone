@@ -4,22 +4,25 @@ using UnityEngine;
 
 public class EndlessPipeGenerator : MonoBehaviour
 {
-    [SerializeField] private PipeCoupleSpawner pipeSpawnerPrefab;
+    
     [SerializeField] private PlayerController player;
+    
+    
+
+    [Header("Ground")]
     [SerializeField] private GameObject groundRight;
     [SerializeField] private GameObject groundLeft;
     private SpriteRenderer groundLeftSprite;
     private SpriteRenderer groundRightSprite;
-    private ObjPool<PipeCoupleSpawner> pipePool;
-    PipeCoupleSpawner pipeSpawner;
-
     public Vector3 GroundLeftPos => groundLeftPos;
     public Vector3 GroundRightPos => groundRightPos;
 
     private Vector3 groundRightPos;
     private Vector3 groundLeftPos;
 
-
+    [Header("Pipes Parameters")]
+    [SerializeField] private ObjPool<PipeCoupleSpawner> pipePool;
+    
     [SerializeField] private int numberOfPipesSpawn = 2;
     [SerializeField] private float distBetweenPipes = 5;
     [SerializeField] private float initialDistanceToStartSpawn = 10;
@@ -31,11 +34,8 @@ public class EndlessPipeGenerator : MonoBehaviour
     [SerializeField]private List<PipeCoupleSpawner> pipeSpawnersList = new List<PipeCoupleSpawner>();
     private void Awake()
     {
-        pipePool = GetComponent<PipePool>();
-        groundLeftSprite = groundLeft.gameObject.GetComponent<SpriteRenderer>();
-        groundRightSprite = groundRight.gameObject.GetComponent<SpriteRenderer>();
-        groundRightPos = groundRight.transform.position;
-        groundLeftPos = groundLeft.transform.position;     
+        pipePool.Initialize();
+        SetupGround();
         
     }
     private void Update()
@@ -51,6 +51,13 @@ public class EndlessPipeGenerator : MonoBehaviour
         PipeSpawn(numberOfPipesSpawn);
     }
 
+    private void SetupGround()
+    {
+        groundLeftSprite = groundLeft.gameObject.GetComponent<SpriteRenderer>();
+        groundRightSprite = groundRight.gameObject.GetComponent<SpriteRenderer>();
+        groundRightPos = groundRight.transform.position;
+        groundLeftPos = groundLeft.transform.position;
+    }
     private void GroundController()
     {
         if (player.transform.position.x >= groundRightPos.x)
@@ -86,9 +93,9 @@ public class EndlessPipeGenerator : MonoBehaviour
     {       
         for (int i = 0; i < numberOfPipes; i++)
         {
-            pipeSpawner = pipePool.GetOrCreateFromPool(pipeSpawnerPrefab, currentSpawnPos, transform);
+            PipeCoupleSpawner pipeSpawner = pipePool.GetFromPool(currentSpawnPos,Quaternion.identity, transform);
             pipeSpawner.transform.position = currentSpawnPos;
-            pipeSpawner.SetPipePosition();
+            pipeSpawner.RandomizePipes();
             currentSpawnPos.x += distBetweenPipes;
             pipeSpawnersList.Add(pipeSpawner);
         }        

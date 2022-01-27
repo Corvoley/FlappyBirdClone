@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PipeCoupleSpawner : MonoBehaviour
+public class PipeCoupleSpawner : MonoBehaviour, IPooledObject
 {
     [SerializeField] private Pipe bottomPipePrefab;
     [SerializeField] private Pipe topPipePrefab;
@@ -15,19 +15,7 @@ public class PipeCoupleSpawner : MonoBehaviour
     private Pipe bottomPipe;
     private Pipe topPipe;
 
-
-    private void Awake()
-    {
-        SpawnPipes();
-    }
-    public void SpawnPipes()
-    {   
-        bottomPipe = Instantiate(bottomPipePrefab, transform.position, Quaternion.identity, transform);
-        topPipe = Instantiate(topPipePrefab, transform.position, Quaternion.identity, transform);
-        SetPipePosition();       
-
-    }
-    public void SetPipePosition()
+    public void RandomizePipes()
     {
         float gapPosY = transform.position.y + Random.Range(-minGapCenter, maxGapCenter);
         float gapSize = Random.Range(minGapSize, maxGapSize);
@@ -55,5 +43,19 @@ public class PipeCoupleSpawner : MonoBehaviour
         Gizmos.DrawLine(position - Vector3.up * maxGapSize * 0.5f, position + Vector3.up * maxGapSize * 0.5f);
     }
 
+    public void OnInstantiated()
+    {
+        bottomPipe = Instantiate(bottomPipePrefab, transform.position, Quaternion.identity, transform);
+        topPipe = Instantiate(topPipePrefab, transform.position, Quaternion.identity, transform);
+    }
 
+    public void OnEnabledFromPool()
+    {
+        RandomizePipes();
+    }
+
+    public void OnDisabledFromPool()
+    {
+        
+    }
 }

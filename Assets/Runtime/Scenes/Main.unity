@@ -123,11 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &19928950 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1308468039543344190, guid: 228738ebb3057764aa194b053a021f1b, type: 3}
-  m_PrefabInstance: {fileID: 1308468039146866250}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &63465617
 GameObject:
   m_ObjectHideFlags: 0
@@ -1019,25 +1014,12 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1308468039543344191, guid: 228738ebb3057764aa194b053a021f1b, type: 3}
   m_PrefabInstance: {fileID: 1308468039146866250}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 19928950}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b9498e178a594994c8b546ca2f6ca116, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1861729555
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 19928950}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eeb52d826cee06841887ff58a1248dff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objPool: []
 --- !u!1 &1878915229
 GameObject:
   m_ObjectHideFlags: 0
@@ -1269,9 +1251,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1534662523}
     - target: {fileID: 1308468039543344191, guid: 228738ebb3057764aa194b053a021f1b, type: 3}
+      propertyPath: pipePool.prefab
+      value: 
+      objectReference: {fileID: 946147369747226720, guid: 87896fe5412cbf24ebc1ee87946da4a1, type: 3}
+    - target: {fileID: 1308468039543344191, guid: 228738ebb3057764aa194b053a021f1b, type: 3}
       propertyPath: initialSpawnPosX
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 1308468039543344191, guid: 228738ebb3057764aa194b053a021f1b, type: 3}
+      propertyPath: pipePool.poolRoot
+      value: 
+      objectReference: {fileID: 1170188032}
     - target: {fileID: 1308468039543344191, guid: 228738ebb3057764aa194b053a021f1b, type: 3}
       propertyPath: numberOfPipesSpawn
       value: 2
