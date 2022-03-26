@@ -51,7 +51,7 @@ public class GameMode : MonoBehaviour
     }
     public void StartGame()
     {
-        playerController.MovementParameters = noGravityMovimentParameters;
+        playerController.MovementParameters = gameRunningParameters;
         playerController.Flap();        
         pipeGenerator.StartPipeSpawn();
         screenController.ShowInGameHud();

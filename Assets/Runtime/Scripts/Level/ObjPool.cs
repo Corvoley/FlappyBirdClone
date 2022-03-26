@@ -13,20 +13,19 @@ public class ObjPool<T> where T : MonoBehaviour, IPooledObject
     [SerializeField] private T prefab;
     [SerializeField] private int initalObjectCount = 5;
     private List<T> objects;
-
-
-
+    
     public void Initialize()
     {
         objects = new List<T>(initalObjectCount);
         for (int i = 0; i < initalObjectCount; i++)
         {
-            objects.Add(InstantiateObject());
+            objects.Add(InstantiateObject());            
+
         }
     }
     public T GetFromPool(Vector3 position, Quaternion rotation, Transform parent)
     {
-
+       
         T obj;
         if (objects.Count > 0)
         {
